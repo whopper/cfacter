@@ -26,6 +26,11 @@ namespace facter { namespace facts { namespace posix {
          */
         virtual void resolve_facts(collection& facts);
         /**
+         * Called to resolve the os structured fact.
+         * @param facts The fact collection that is resolving facts.
+         */
+        virtual void resolve_structured_operating_system(collection& facts);
+        /**
          * Called to resolve the operating system fact.
          * @param facts The fact collection that is resolving facts.
          */
@@ -45,6 +50,26 @@ namespace facter { namespace facts { namespace posix {
          * @param facts The fact collection that is resolving facts.
          */
         virtual void resolve_operating_system_major_release(collection& facts) {}
+        /**
+         * Called to determine the operating system name.
+         * @param facts The fact collection that is resolving facts.
+         * @returns Returns a string representing the operating system name.
+         */
+        static std::string determine_operating_system(collection& facts);
+        /**
+         * Called to determine the operating system family.
+         * @param facts The fact collection that is resolving facts.
+         * @param operating_system The name of the operating system.
+         * @returns Returns a string representing the operaing system family.
+         */
+        static std::string determine_os_family(collection& facts, std::string& operating_system);
+        /**
+         * Called to determine the operating system release.
+         * @param facts The fact collection that is resolving facts.
+         * @param operating_system The name of the operating system.
+         * @returns Returns a string representing the operating system release.
+         */
+        static std::string determine_operating_system_release(collection& facts);
     };
 
 }}}  // namespace facter::facts::posix
