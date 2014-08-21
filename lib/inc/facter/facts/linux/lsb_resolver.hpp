@@ -47,10 +47,15 @@ namespace facter { namespace facts { namespace linux {
          */
         virtual void resolve_dist_description(collection& facts);
         /**
-         * Called to resolve the LSB dist major and minor release fact.
+         * Called to resolve the LSB dist major release fact.
          * @param facts The fact collection that is resolving facts.
          */
-        virtual void resolve_dist_version(collection& facts);
+        virtual void resolve_dist_major_version(collection& facts);
+        /**
+         * Called to resolve the LSB dist minor release fact.
+         * @param facts The fact collection that is resolving facts.
+         */
+        virtual void resolve_dist_minor_version(collection& facts);
         /**
          * Called to resolve the LSB release fact.
          * @param facts The fact collection that is resolving facts.

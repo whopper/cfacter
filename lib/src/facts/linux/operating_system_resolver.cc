@@ -28,10 +28,22 @@ namespace facter { namespace facts { namespace linux {
     {
         auto os_value = make_value<map_value>();
         auto release_value = make_value<map_value>();
+        auto lsb_value = make_value<map_value>();
+
+        // Collect OS data
         auto operating_system = determine_operating_system(facts);
         auto os_family = posix::operating_system_resolver::determine_os_family(facts, operating_system);
         auto release = determine_operating_system_release(facts, operating_system);
         auto release_major = determine_operating_system_major_release(facts, operating_system, release);
+
+        // Collect LSB data
+        auto lsb_dist_id = determine_lsb_dist_id();
+        auto lsb_dist_release = determine_lsb_dist_id();
+        auto lsb_dist_codename = determine_lsb_dist_id();
+        auto lsb_dist_major_version = determine_lsb_dist_id();
+        auto lsb_dist_minor_version = determine_lsb_dist_id();
+        auto lsb_release = determine_lsb_dist_id();
+
 
         if (!operating_system.empty()) {
             os_value->add("name", make_value<string_value>(operating_system));
@@ -51,6 +63,34 @@ namespace facter { namespace facts { namespace linux {
 
         if (!release_value->empty()) {
             os_value->add("release", move(release_value));
+        }
+
+        if (!lsb_dist_id.empty()) {
+            lsb_value->add("dist_id", make_value<string_value>(lsb_dist_id));
+        }
+
+        if (!lsb_dist_release.empty()) {
+            lsb_value->add("dist_release", make_value<string_value>(lsb_dist_release));
+        }
+
+        if (!lsb_dist_codename.empty()) {
+            lsb_value->add("codename", make_value<string_value>(lsb_dist_codename));
+        }
+
+        if (!lsb_dist_major_version.empty()) {
+            lsb_value->add("dist_major_release", make_value<string_value>(lsb_dist_major_version));
+        }
+
+        if (!lsb_dist_minor_version.empty()) {
+            lsb_value->add("dist_minor_release", make_value<string_value>(lsb_dist_minor_version));
+        }
+
+        if (!lsb_release.empty()) {
+            lsb_value->add("release", make_value<string_value>(lsb_release));
+        }
+
+        if (!lsb_value->empty()) {
+            os_value->add("lsb", move(lsb_value));
         }
 
         if (!os_value->empty()) {
@@ -258,7 +298,7 @@ namespace facter { namespace facts { namespace linux {
             if (release) {
                 return release->value();
             } else {
-                return "";
+                return {};
             }
         }
 
@@ -270,7 +310,8 @@ namespace facter { namespace facts { namespace linux {
         return value;
     }
 
-    string operating_system_resolver::determine_operating_system_major_release(collection& facts, string& operating_system, string& os_release) {
+    string operating_system_resolver::determine_operating_system_major_release(collection& facts, string& operating_system, string& os_release)
+    {
         if (operating_system.empty() ||
             os_release.empty() || !(
             operating_system == os::amazon ||
@@ -285,7 +326,7 @@ namespace facter { namespace facts { namespace linux {
             operating_system == os::scientific_cern ||
             operating_system == os::cumulus))
         {
-          return "";
+          return {};
         }
 
         string value = os_release;
@@ -294,6 +335,95 @@ namespace facter { namespace facts { namespace linux {
             value = value.substr(0, pos);
         }
         return value;
+    }
+
+    string determine_lsb_dist_id()
+    {
+        auto result = execute("lsb_release", {"-i", "-s"});
+        if (!result.first || result.second.empty()) {
+            return {};
+        }
+        return result.second;
+    }
+
+    string determine_lsb_dist_release()
+    {
+        auto result = execute("lsb_release", {"-r", "-s"});
+        if (!result.first || result.second.empty()) {
+            return {};
+        }
+        return result.second;
+    }
+
+    string determine_lsb_dist_codename()
+    {
+        auto result = execute("lsb_release", {"-c", "-s"});
+        if (!result.first || result.second.empty()) {
+            return {};
+        }
+        return result.second;
+    }
+
+    string determine_lsb_dist_description()
+    {
+        auto result = execute("lsb_release", {"-d", "-s"});
+         if (!result.first || result.second.empty()) {
+             return {};
+         }
+
+         // The value may be quoted; trim the quotes
+         return trim(move(result.second));
+    }
+
+    string determine_lsb_dist_major_version()
+    {
+        auto dist_release = determine_lsb_dist_release();
+        auto dist_id = determine_lsb_dist_id();
+        if (!dist_release) {
+            return;
+        }
+
+        string major;
+        string regex;
+        if (strcmp(dist_id.c_str(), "Ubuntu") == 0) {
+            regex = "(\\d+\\.\\d*)\\.?\\d*";
+        } else {
+            regex = "(\\d+)\\.\\d*";
+        }
+        if (!re_search(dist_release, regex, &major)) {
+            major = dist_release;
+        }
+        return major;
+    }
+
+    string determine_lsb_dist_minor_version()
+    {
+        auto dist_release = determine_lsb_dist_release();
+        auto dist_id = determine_lsb_dist_id();
+        if (!dist_release) {
+            return;
+        }
+
+        string minor;
+        string regex;
+        if (strcmp(dist_id.c_str(), "Ubuntu") == 0) {
+            regex = "\\d+\\.\\d*\\.?(\\d*)";
+        } else {
+            regex = "\\d+\\.(\\d*)";
+        }
+        if (!re_search(dist_release, regex, &minor)) {
+            minor = dist_release;
+        }
+        return minor;
+    }
+
+    string determine_lsb_dist_release()
+    {
+          auto result = execute("lsb_release", {"-v", "-s"});
+          if (!result.first || result.second.empty()) {
+              return;
+          }
+          facts.add(fact::lsb_release, make_value<string_value>(move(result.second)));
     }
 
     string operating_system_resolver::check_cumulus_linux()

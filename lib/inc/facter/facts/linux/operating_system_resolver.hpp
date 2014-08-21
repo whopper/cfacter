@@ -66,6 +66,12 @@ namespace facter { namespace facts { namespace linux {
          * @returns Returns a string representing the operating system name.
          */
         static std::string determine_operating_system_major_release(collection& facts, std::string& operating_system, std::string& os_release);
+        static std::string determine_lsb_dist_id();
+        static std::string determine_lsb_dist_release();
+        static std::string determine_lsb_dist_codename();
+        static std::string determine_lsb_dist_description();
+        static std::string determine_lsb_dist_version();
+        static std::string determine_lsb_release();
         static std::string check_cumulus_linux();
         static std::string check_debian_linux(string_value const* dist_id);
         static std::string check_oracle_linux();

@@ -40,75 +40,128 @@ namespace facter { namespace facts { namespace linux {
 
     void lsb_resolver::resolve_dist_id(collection& facts)
     {
-        auto result = execute("lsb_release", {"-i", "-s"});
-        if (!result.first || result.second.empty()) {
-            return;
+        auto os_value = facts.get<map_value>(fact::os, false);
+        if (!os_value) {
+          return;
         }
-        facts.add(fact::lsb_dist_id, make_value<string_value>(move(result.second)));
+
+        auto lsb_value = os_value->get<map_value>("lsb");
+        if (!release_value) {
+          return;
+        }
+
+        auto lsb_dist_id = lsb_value->get<string_value>("dist_id");
+        if (lsb_dist_id) {
+            facts.add(fact::lsb_dist_id, make_value<string_value>(lsb_dist_id->value()));
+        }
     }
 
     void lsb_resolver::resolve_dist_release(collection& facts)
     {
-        auto result = execute("lsb_release", {"-r", "-s"});
-        if (!result.first || result.second.empty()) {
-            return;
+        auto os_value = facts.get<map_value>(fact::os, false);
+        if (!os_value) {
+          return;
         }
-        facts.add(fact::lsb_dist_release, make_value<string_value>(move(result.second)));
+
+        auto lsb_value = os_value->get<map_value>("lsb");
+        if (!release_value) {
+          return;
+        }
+
+        auto lsb_dist_release = lsb_value->get<string_value>("dist_release");
+        if (lsb_dist_release) {
+            facts.add(fact::lsb_dist_release, make_value<string_value>(lsb_dist_release->value()));
+        }
     }
 
     void lsb_resolver::resolve_dist_codename(collection& facts)
     {
-        auto result = execute("lsb_release", {"-c", "-s"});
-        if (!result.first || result.second.empty()) {
-            return;
+        auto os_value = facts.get<map_value>(fact::os, false);
+        if (!os_value) {
+          return;
         }
-        facts.add(fact::lsb_dist_codename, make_value<string_value>(move(result.second)));
+
+        auto lsb_value = os_value->get<map_value>("lsb");
+        if (!release_value) {
+          return;
+        }
+
+        auto lsb_dist_codename = lsb_value->get<string_value>("dist_codename");
+        if (lsb_dist_codename) {
+            facts.add(fact::lsb_dist_codename, make_value<string_value>(lsb_dist_codename->value()));
+        }
     }
 
     void lsb_resolver::resolve_dist_description(collection& facts)
     {
-        auto result = execute("lsb_release", {"-d", "-s"});
-        if (!result.first || result.second.empty()) {
-            return;
+        auto os_value = facts.get<map_value>(fact::os, false);
+        if (!os_value) {
+          return;
         }
 
-        // The value may be quoted; trim the quotes
-        facts.add(fact::lsb_dist_description, make_value<string_value>(trim(move(result.second), { '\"' })));
+        auto lsb_value = os_value->get<map_value>("lsb");
+        if (!release_value) {
+          return;
+        }
+
+        auto lsb_dist_description = lsb_value->get<string_value>("dist_description");
+        if (lsb_dist_description) {
+            facts.add(fact::lsb_dist_description, make_value<string_value>(lsb_dist_description->value()));
+        }
     }
 
-    void lsb_resolver::resolve_dist_version(collection& facts)
+    void lsb_resolver::resolve_dist_major_version(collection& facts)
     {
-        auto dist_release = facts.get<string_value>(fact::lsb_dist_release, false);
-        auto dist_id = facts.get<string_value>(fact::lsb_dist_id, false);
-        if (!dist_release) {
-            return;
+        auto os_value = facts.get<map_value>(fact::os, false);
+        if (!os_value) {
+          return;
         }
 
-        string major;
-        string minor;
-        string regex;
-        if (strcmp(dist_id->value().c_str(), "Ubuntu") == 0) {
-            regex = "(\\d+\\.\\d*)\\.?(\\d*)";
-        } else {
-            regex = "(\\d+)\\.(\\d*)";
+        auto lsb_value = os_value->get<map_value>("lsb");
+        if (!release_value) {
+          return;
         }
-        if (!re_search(dist_release->value(), regex, &major, &minor)) {
-            major = dist_release->value();
-        }
-        facts.add(fact::lsb_dist_major_release, make_value<string_value>(move(major)));
 
-        if (!minor.empty()) {
-            facts.add(fact::lsb_dist_minor_release, make_value<string_value>(move(minor)));
+        auto lsb_dist_major_release = lsb_value->get<string_value>("dist_major_release");
+        if (lsb_dist_major_release) {
+            facts.add(fact::lsb_dist_major_release, make_value<string_value>(lsb_dist_major_release->value()));
+        }
+    }
+
+    void lsb_resolver::resolve_dist_minor_version(collection& facts)
+    {
+        auto os_value = facts.get<map_value>(fact::os, false);
+        if (!os_value) {
+          return;
+        }
+
+        auto lsb_value = os_value->get<map_value>("lsb");
+        if (!release_value) {
+          return;
+        }
+
+        auto lsb_dist_minor_release = lsb_value->get<string_value>("dist_minor_release");
+        if (lsb_dist_minor_release) {
+            facts.add(fact::lsb_dist_minor_release, make_value<string_value>(lsb_dist_minor_release->value()));
         }
     }
 
     void lsb_resolver::resolve_release(collection& facts)
     {
-        auto result = execute("lsb_release", {"-v", "-s"});
-        if (!result.first || result.second.empty()) {
-            return;
+        auto os_value = facts.get<map_value>(fact::os, false);
+        if (!os_value) {
+          return;
         }
-        facts.add(fact::lsb_release, make_value<string_value>(move(result.second)));
+
+        auto lsb_value = os_value->get<map_value>("lsb");
+        if (!release_value) {
+          return;
+        }
+
+        auto lsb_release = lsb_value->get<string_value>("release");
+        if (lsb_release) {
+            facts.add(fact::lsb_release, make_value<string_value>(lsb_release->value()));
+        }
     }
 
 }}}  // namespace facter::facts::linux
