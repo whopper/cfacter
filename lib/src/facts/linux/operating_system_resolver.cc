@@ -330,10 +330,10 @@ namespace facter { namespace facts { namespace linux {
         return {};
     }
 
-    map<string, string> collect_lsb_map(collection& facts)
-    {
-        auto lsb_value = linux::lsb_resolver::construct_lsb_map(facts);
-        cout << lsb_value.size();
-    }
+    //map<string, string> collect_lsb_map(collection& facts)
+    //{
+    //    auto lsb_value = linux::lsb_resolver::construct_lsb_map(facts);
+    //    cout << lsb_value.size();
+    //}
 
 }}}  // namespace facter::facts::linux

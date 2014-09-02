@@ -41,7 +41,7 @@ namespace facter { namespace facts { namespace linux {
          *
          *
          */
-        virtual std::map<std::string, std::string> collect_lsb_map(collection& facts);
+        //virtual std::map<std::string, std::string> collect_lsb_map(collection& facts);
 
      private:
         static std::string check_cumulus_linux();

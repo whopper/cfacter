@@ -82,7 +82,7 @@ namespace facter { namespace facts { namespace posix {
          *
          *
          */
-        virtual std::map<std::string, std::string> collect_lsb_map();
+        //virtual std::map<std::string, std::string> collect_lsb_map();
     };
 
 }}}  // namespace facter::facts::posix
