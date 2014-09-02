@@ -66,8 +66,7 @@ namespace facter { namespace facts { namespace posix {
 
         //  Collect LSB data
         auto lsb_value = make_value<map_value>();
-        auto lsb_data = collect_lsb_data();
-
+        auto lsb_data = collect_lsb_map();
 
         if (!lsb_value->empty()) {
              os_value->add("lsb", move(lsb_value));
