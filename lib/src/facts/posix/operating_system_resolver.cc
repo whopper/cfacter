@@ -42,7 +42,7 @@ namespace facter { namespace facts { namespace posix {
         //  Collect Operating System data
         auto operating_system = determine_operating_system(facts);
         auto os_family = operating_system_resolver::determine_os_family(facts, operating_system);
-        auto release = determine_operating_system_release(facts);
+        auto release = determine_operating_system_release(facts, operating_system);
         auto release_major = determine_operating_system_major_release(facts, operating_system, release);
         if (!operating_system.empty()) {
             os_value->add("name", make_value<string_value>(operating_system));
@@ -66,6 +66,8 @@ namespace facter { namespace facts { namespace posix {
 
         //  Collect LSB data
         auto lsb_value = make_value<map_value>();
+        auto lsb_data = collect_lsb_data();
+
 
         if (!lsb_value->empty()) {
              os_value->add("lsb", move(lsb_value));
@@ -186,7 +188,7 @@ namespace facter { namespace facts { namespace posix {
         return value;
     }
 
-    string operating_system_resolver::determine_operating_system_release(collection& facts)
+    string operating_system_resolver::determine_operating_system_release(collection& facts, string& operating_system)
     {
         // Default to the same value as the kernelrelease fact
         auto release = facts.get<string_value>(fact::kernel_release);
