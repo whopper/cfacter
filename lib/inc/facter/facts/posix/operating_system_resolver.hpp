@@ -69,7 +69,7 @@ namespace facter { namespace facts { namespace posix {
          * @param operating_system The name of the operating system.
          * @returns Returns a string representing the operating system release.
          */
-        virtual std::string determine_operating_system_release(collection& facts);
+        virtual std::string determine_operating_system_release(collection& facts, std::string& operating_system);
         /**
          * Called to determine the operating system major release.
          * @param facts The fact collection that is resolving facts.

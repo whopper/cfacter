@@ -68,7 +68,7 @@ namespace facter { namespace facts { namespace linux {
     {
         if (operating_system.empty()) {
             // Use the base implementation
-            return posix::operating_system_resolver::determine_operating_system_release(facts);
+            return posix::operating_system_resolver::determine_operating_system_release(facts, operating_system);
         }
 
         // Map of release files that contain a "release X.X.X" on the first line
@@ -180,7 +180,7 @@ namespace facter { namespace facts { namespace linux {
 
         // Use the base implementation if we have no value
         if (value.empty()) {
-            return posix::operating_system_resolver::determine_operating_system_release(facts);
+            return posix::operating_system_resolver::determine_operating_system_release(facts, operating_system);
         }
 
         return value;
