@@ -66,10 +66,6 @@ namespace facter { namespace facts { namespace posix {
 
         //  Collect LSB data
         auto lsb_value = make_value<map_value>();
-        // auto lsb_data = collect_lsb_map();
-
-        //  Collect LSB data
-        auto lsb_value = make_value<map_value>();
         auto lsb_dist_id = facts.get<string_value>(fact::lsb_dist_id);
         auto lsb_dist_release = facts.get<string_value>(fact::lsb_dist_release);
         auto lsb_dist_codename = facts.get<string_value>(fact::lsb_dist_codename);
@@ -104,9 +100,6 @@ namespace facter { namespace facts { namespace posix {
         if (lsb_release) {
             lsb_value->add("release", make_value<string_value>(lsb_release->value()));
         }
-
-
-
 
         if (!lsb_value->empty()) {
              os_value->add("lsb", move(lsb_value));
@@ -242,11 +235,5 @@ namespace facter { namespace facts { namespace posix {
     {
         return {};
     }
-
-    //map<string, string> operating_system_resolver::collect_lsb_map()
-    //{
-    //    map<string, string> test;
-    //    return test;
-    //}
 
 }}}  // namespace facter::facts::posix

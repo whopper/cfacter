@@ -37,11 +37,6 @@ namespace facter { namespace facts { namespace linux {
          * @returns Returns a string representing the operating system major release.
          */
         virtual std::string determine_operating_system_major_release(collection& facts, std::string& operating_system, std::string& os_release);
-        /**
-         *
-         *
-         */
-        //virtual std::map<std::string, std::string> collect_lsb_map(collection& facts);
 
      private:
         static std::string check_cumulus_linux();
