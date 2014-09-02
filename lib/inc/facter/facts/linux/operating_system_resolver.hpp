@@ -17,55 +17,35 @@ namespace facter { namespace facts { namespace linux {
     {
      protected:
         /**
-         * Called to resolve the structured operating system fact.
-         * @param facts The fact collection that is resolving facts.
-         */
-        virtual void resolve_structured_operating_system(collection& facts);
-        /**
-         * Called to resolve the operating system fact.
-         * @param facts The fact collection that is resolving facts.
-         */
-        virtual void resolve_operating_system(collection& facts);
-        /**
-         * Called to resolve the operating system release fact.
-         * @param facts The fact collection that is resolving facts.
-         */
-        virtual void resolve_operating_system_release(collection& facts);
-        /**
-         * Called to resolve the operating system major release fact.
-         * @param facts The fact collection that is resolving facts.
-         */
-        virtual void resolve_operating_system_major_release(collection& facts);
-
-     private:
-        /**
          * Called to determine the operating system name.
          * @param facts The fact collection that is resolving facts.
          * @returns Returns a string representing the operating system name.
          */
-        static std::string determine_operating_system(collection &facts);
+        virtual std::string determine_operating_system(collection &facts);
         /**
          * Called to determine the operating system family.
          * @param facts The fact collection that is resolving facts.
          * @param operating_system The name of the operating system
          * @returns Returns a string representing the operating system family.
          */
-        static std::string determine_os_family(collection& facts, std::string& operating_system);
+        virtual std::string determine_os_family(collection& facts, std::string& operating_system);
         /**
          * Called to determine the operating system release.
          * @param facts The fact collection that is resolving facts.
          * @param operating_system The name of the operating system.
          * @returns Returns a string representing the operating system release.
          */
-        static std::string determine_operating_system_release(collection& facts, std::string& operating_system);
+        virtual std::string determine_operating_system_release(collection& facts, std::string& operating_system);
         /**
-         * Called to determine the operating system release.
+         * Called to determine the operating system major release.
          * @param facts The fact collection that is resolving facts.
          * @param operating_system The name of the operating system.
          * @param os_release The version of the operating system.
          * @returns Returns a string representing the operating system major release.
          */
-        static std::string determine_operating_system_major_release(collection& facts, std::string& operating_system, std::string& os_release);
+        virtual std::string determine_operating_system_major_release(collection& facts, std::string& operating_system, std::string& os_release);
+
+     private:
         static std::string check_cumulus_linux();
         static std::string check_debian_linux(string_value const* dist_id);
         static std::string check_oracle_linux();

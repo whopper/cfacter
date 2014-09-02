@@ -37,9 +37,13 @@ namespace facter { namespace facts { namespace posix {
     void operating_system_resolver::resolve_structured_operating_system(collection& facts)
     {
         auto os_value = make_value<map_value>();
+        auto release_value = make_value<map_value>();
+
+        //  Collect Operating System data
         auto operating_system = determine_operating_system(facts);
-        auto os_family = determine_os_family(facts, operating_system);
+        auto os_family = operating_system_resolver::determine_os_family(facts, operating_system);
         auto release = determine_operating_system_release(facts);
+        auto release_major = determine_operating_system_major_release(facts, operating_system, release);
         if (!operating_system.empty()) {
             os_value->add("name", make_value<string_value>(operating_system));
         }
@@ -49,9 +53,56 @@ namespace facter { namespace facts { namespace posix {
         }
 
         if (!release.empty()) {
-            auto release_value = make_value<map_value>();
             release_value->add("full", make_value<string_value>(release));
+        }
+
+        if (!release_major.empty()) {
+            release_value->add("major", make_value<string_value>(release_major));
+        }
+
+        if (!release_value->empty()) {
             os_value->add("release", move(release_value));
+        }
+
+        //  Collect LSB data
+        auto lsb_value = make_value<map_value>();
+        auto lsb_dist_id = facts.get<string_value>(fact::lsb_dist_id);
+        auto lsb_dist_release = facts.get<string_value>(fact::lsb_dist_release);
+        auto lsb_dist_codename = facts.get<string_value>(fact::lsb_dist_codename);
+        auto lsb_dist_description = facts.get<string_value>(fact::lsb_dist_description);
+        auto lsb_dist_major_release = facts.get<string_value>(fact::lsb_dist_major_release);
+        auto lsb_dist_minor_release = facts.get<string_value>(fact::lsb_dist_minor_release);
+        auto lsb_release = facts.get<string_value>(fact::lsb_release);
+        if (lsb_dist_id) {
+            lsb_value->add("distid", make_value<string_value>(lsb_dist_id->value()));
+        }
+
+        if (lsb_dist_release) {
+            lsb_value->add("distrelease", make_value<string_value>(lsb_dist_release->value()));
+        }
+
+        if (lsb_dist_codename) {
+            lsb_value->add("distcodename", make_value<string_value>(lsb_dist_codename->value()));
+        }
+
+        if (lsb_dist_description) {
+            lsb_value->add("distdescription", make_value<string_value>(lsb_dist_description->value()));
+        }
+
+        if (lsb_dist_major_release) {
+            lsb_value->add("majdistrelease", make_value<string_value>(lsb_dist_major_release->value()));
+        }
+
+        if (lsb_dist_minor_release) {
+            lsb_value->add("minordistrelease", make_value<string_value>(lsb_dist_minor_release->value()));
+        }
+
+        if (lsb_release) {
+            lsb_value->add("release", make_value<string_value>(lsb_release->value()));
+        }
+
+        if (!lsb_value->empty()) {
+             os_value->add("lsb", move(lsb_value));
         }
 
         if (!os_value->empty()) {
@@ -178,6 +229,11 @@ namespace facter { namespace facts { namespace posix {
         } else {
             return release->value();
         }
+    }
+
+    string operating_system_resolver::determine_operating_system_major_release(collection& facts, string& operating_system, string& os_release)
+    {
+        return {};
     }
 
 }}}  // namespace facter::facts::posix

@@ -2,6 +2,7 @@
 #include <facter/facts/collection.hpp>
 #include <facter/facts/fact.hpp>
 #include <facter/facts/scalar_value.hpp>
+#include <facter/facts/map_value.hpp>
 #include <facter/execution/execution.hpp>
 #include <facter/util/string.hpp>
 #include <facter/util/regex.hpp>
@@ -36,6 +37,7 @@ namespace facter { namespace facts { namespace linux {
         resolve_dist_description(facts);
         resolve_dist_version(facts);
         resolve_release(facts);
+        construct_lsb_map(facts);
     }
 
     void lsb_resolver::resolve_dist_id(collection& facts)
@@ -109,6 +111,48 @@ namespace facter { namespace facts { namespace linux {
             return;
         }
         facts.add(fact::lsb_release, make_value<string_value>(move(result.second)));
+    }
+
+    map<string, string> lsb_resolver::construct_lsb_map(collection& facts)
+    {
+        //  Collect LSB data
+        map<string, string> lsb_value;
+        auto lsb_dist_id = facts.get<string_value>(fact::lsb_dist_id, false);
+        auto lsb_dist_release = facts.get<string_value>(fact::lsb_dist_release, false);
+        auto lsb_dist_codename = facts.get<string_value>(fact::lsb_dist_codename, false);
+        auto lsb_dist_description = facts.get<string_value>(fact::lsb_dist_description, false);
+        auto lsb_dist_major_release = facts.get<string_value>(fact::lsb_dist_major_release, false);
+        auto lsb_dist_minor_release = facts.get<string_value>(fact::lsb_dist_minor_release, false);
+        auto lsb_release = facts.get<string_value>(fact::lsb_release, false);
+        if (lsb_dist_id) {
+            lsb_value["distid"] = lsb_dist_id->value();
+        }
+
+        if (lsb_dist_release) {
+            lsb_value["distrelease"] = lsb_dist_release->value();
+        }
+
+        if (lsb_dist_codename) {
+            lsb_value["distcodename"] = lsb_dist_codename->value();
+        }
+
+        if (lsb_dist_description) {
+            lsb_value["distdescription"] = lsb_dist_description->value();
+        }
+
+        if (lsb_dist_major_release) {
+            lsb_value["majdistrelease"] = lsb_dist_major_release->value();
+        }
+
+        if (lsb_dist_minor_release) {
+            lsb_value["minordistrelease"] = lsb_dist_minor_release->value();
+        }
+
+        if (lsb_release) {
+            lsb_value["release"] = lsb_release->value();
+        }
+
+        return lsb_value;
     }
 
 }}}  // namespace facter::facts::linux
