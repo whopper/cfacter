@@ -66,40 +66,6 @@ namespace facter { namespace facts { namespace posix {
 
         //  Collect LSB data
         auto lsb_value = make_value<map_value>();
-        auto lsb_dist_id = facts.get<string_value>(fact::lsb_dist_id);
-        auto lsb_dist_release = facts.get<string_value>(fact::lsb_dist_release);
-        auto lsb_dist_codename = facts.get<string_value>(fact::lsb_dist_codename);
-        auto lsb_dist_description = facts.get<string_value>(fact::lsb_dist_description);
-        auto lsb_dist_major_release = facts.get<string_value>(fact::lsb_dist_major_release);
-        auto lsb_dist_minor_release = facts.get<string_value>(fact::lsb_dist_minor_release);
-        auto lsb_release = facts.get<string_value>(fact::lsb_release);
-        if (lsb_dist_id) {
-            lsb_value->add("distid", make_value<string_value>(lsb_dist_id->value()));
-        }
-
-        if (lsb_dist_release) {
-            lsb_value->add("distrelease", make_value<string_value>(lsb_dist_release->value()));
-        }
-
-        if (lsb_dist_codename) {
-            lsb_value->add("distcodename", make_value<string_value>(lsb_dist_codename->value()));
-        }
-
-        if (lsb_dist_description) {
-            lsb_value->add("distdescription", make_value<string_value>(lsb_dist_description->value()));
-        }
-
-        if (lsb_dist_major_release) {
-            lsb_value->add("majdistrelease", make_value<string_value>(lsb_dist_major_release->value()));
-        }
-
-        if (lsb_dist_minor_release) {
-            lsb_value->add("minordistrelease", make_value<string_value>(lsb_dist_minor_release->value()));
-        }
-
-        if (lsb_release) {
-            lsb_value->add("release", make_value<string_value>(lsb_release->value()));
-        }
 
         if (!lsb_value->empty()) {
              os_value->add("lsb", move(lsb_value));
@@ -234,6 +200,12 @@ namespace facter { namespace facts { namespace posix {
     string operating_system_resolver::determine_operating_system_major_release(collection& facts, string& operating_system, string& os_release)
     {
         return {};
+    }
+
+    map<string, string> operating_system_resolver::collect_lsb_map()
+    {
+        map<string, string> test;
+        return test;
     }
 
 }}}  // namespace facter::facts::posix

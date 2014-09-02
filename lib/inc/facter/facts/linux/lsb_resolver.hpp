@@ -56,6 +56,11 @@ namespace facter { namespace facts { namespace linux {
          * @param facts The fact collection that is resolving facts.
          */
         virtual void resolve_release(collection& facts);
+        /*
+         *
+         *
+         */
+        virtual std::map<std::string, std::string> construct_lsb_map();
     };
 
 }}}  // namespace facter::facts::linux
