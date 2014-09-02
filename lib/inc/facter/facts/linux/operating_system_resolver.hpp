@@ -23,13 +23,6 @@ namespace facter { namespace facts { namespace linux {
          */
         virtual std::string determine_operating_system(collection &facts);
         /**
-         * Called to determine the operating system family.
-         * @param facts The fact collection that is resolving facts.
-         * @param operating_system The name of the operating system
-         * @returns Returns a string representing the operating system family.
-         */
-        virtual std::string determine_os_family(collection& facts, std::string& operating_system);
-        /**
          * Called to determine the operating system release.
          * @param facts The fact collection that is resolving facts.
          * @param operating_system The name of the operating system.

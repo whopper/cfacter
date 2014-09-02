@@ -25,7 +25,6 @@ namespace facter { namespace facts { namespace linux {
          * @param facts The fact collection that is resolving facts.
          */
         virtual void resolve_facts(collection& facts);
-
         /**
          * Called to resolve the LSB dist id fact.
          * @param facts The fact collection that is resolving facts.
@@ -60,7 +59,7 @@ namespace facter { namespace facts { namespace linux {
          *
          *
          */
-        virtual std::map<std::string, std::string> construct_lsb_map();
+        virtual std::map<std::string, std::string> construct_lsb_map(collection& facts);
     };
 
 }}}  // namespace facter::facts::linux
