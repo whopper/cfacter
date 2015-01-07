@@ -206,6 +206,9 @@ namespace facter { namespace facts { namespace linux {
             } else if (name == os::openwrt) {
                 file = release_file::openwrt_version;
                 regex = "(?m)^(\\d+\\.\\d+.*)";
+            } else if (name == os::arista_eos) {
+                file = release_file::arista_eos;
+                regex = "\\d+\\.\\d+(:?\\.\\d+)?[A-M]?$";
             }
             if (file) {
                 string contents = file::read(file);
@@ -348,6 +351,7 @@ namespace facter { namespace facts { namespace linux {
             make_tuple(string(release_file::alpine),         string(os::alpine)),
             make_tuple(string(release_file::mageia),         string(os::mageia)),
             make_tuple(string(release_file::amazon),         string(os::amazon)),
+            make_tuple(string(release_file::arista_eos),     string(os::arista_eos)),
         };
 
         for (auto const& file : files) {

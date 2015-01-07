@@ -168,6 +168,10 @@ namespace facter { namespace facts {
          */
         constexpr static char const* kfreebsd = "GNU/kFreeBSD";
         /**
+         * The Arista EOS operating system.
+         */
+        constexpr static char const* arista_eos = "AristaEOS";
+        /**
          * The Windows operating system.
          */
         constexpr static char const* windows = "windows";

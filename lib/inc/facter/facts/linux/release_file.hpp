@@ -99,6 +99,10 @@ namespace facter { namespace facts { namespace linux {
          * Release file for Mint Linux.
          */
         constexpr static char const* linux_mint_info = "/etc/linuxmint/info";
+        /**
+         * Release file for Arista EOS
+         */
+        constexpr static char const* arista_eos = "/etc/Eos-release";
     };
 
 }}}  // namespace facter::facts::linux
