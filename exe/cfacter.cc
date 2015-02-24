@@ -127,6 +127,7 @@ int main(int argc, char **argv)
             ("no-color", "Disables color output.")
             ("no-custom-facts", "Disables custom facts.")
             ("no-external-facts", "Disables external facts.")
+            ("plaintext", "Output in plaintext format (default).")
             ("trace", "Enable backtraces for custom facts.")
             ("verbose", "Enable verbose (info) output.")
             ("version,v", "Print the version and exit.")
@@ -164,6 +165,12 @@ int main(int argc, char **argv)
             }
             if (vm.count("json") && vm.count("yaml")) {
                 throw po::error("json and yaml options conflict: please specify only one.");
+            }
+            if (vm.count("json") && vm.count("plaintext")) {
+                throw po::error("json and plaintext options conflict: please specify only one.");
+            }
+            if (vm.count("yaml") && vm.count("plaintext")) {
+                throw po::error("yaml and plaintext options conflict: please specify only one.");
             }
             if (vm.count("no-external-facts") && vm.count("external-dir")) {
                 throw po::error("no-external-facts and external-dir options conflict: please specify only one.");
