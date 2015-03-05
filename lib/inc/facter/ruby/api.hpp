@@ -358,9 +358,12 @@ namespace facter {  namespace ruby {
          */
         VALUE* const rb_cFixnum;
         /**
-         * See MRI documentation.
          */
         VALUE* const rb_cFloat;
+        /**
+         * See MRI documentation.
+         */
+        VALUE* const rb_cRegexp;
 
         /**
          * See MRI documentation.
@@ -517,6 +520,12 @@ namespace facter {  namespace ruby {
          * @return Returns true if the given value is a float or false if it is not.
          */
         bool is_float(VALUE value) const;
+        /**
+         * Determines if the given value is a regexp.
+         * @param value The value to check.
+         * @return Returns true if the given value is a regexp or false if it is not.
+         */
+        bool is_regexp(VALUE value) const;
 
         /**
          * Gets the VALUE for nil.
@@ -558,6 +567,14 @@ namespace facter {  namespace ruby {
          * @return Returns true if eql? returns true for the first and second values.
          */
         bool equals(VALUE first, VALUE second) const;
+
+        /**
+         * Determines if a value matches the pattern of a regular expression.
+         * @param first The value to be checked.
+         * @param second The regular expression.
+         * @return Returns true if === returns true for the first and second values.
+         */
+        bool match(VALUE first, VALUE second) const;
 
         /**
          * Gets the underlying native instance from a Ruby data object.

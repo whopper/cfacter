@@ -52,8 +52,8 @@ namespace facter { namespace ruby {
                 });
                 return found;
             }
-            // Compare the value directly
-            return ruby.equals(facter.normalize(_expected), value);
+            // Compare the value directly: TODO: only match if regexp is passed, otherwise equals
+            return ruby.match(facter.normalize(_expected), value);
         }
         // If we have only a block, execute it
         if (!ruby.is_nil(_block)) {

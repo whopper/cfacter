@@ -86,6 +86,7 @@ namespace facter { namespace ruby {
         LOAD_SYMBOL(rb_cSymbol),
         LOAD_SYMBOL(rb_cFixnum),
         LOAD_SYMBOL(rb_cFloat),
+        LOAD_SYMBOL(rb_cRegexp),
         LOAD_SYMBOL(rb_eException),
         LOAD_SYMBOL(rb_eArgError),
         LOAD_SYMBOL(rb_eTypeError),
@@ -368,6 +369,11 @@ namespace facter { namespace ruby {
         return is_a(value, *rb_cFloat);
     }
 
+    bool api::is_regexp(VALUE value) const
+    {
+        return is_a(value, *rb_cRegexp);
+    }
+
     VALUE api::nil_value() const
     {
         return _nil;
@@ -435,6 +441,11 @@ namespace facter { namespace ruby {
     bool api::equals(VALUE first, VALUE second) const
     {
         return is_true(rb_funcall(first, rb_intern("eql?"), 1, second));
+    }
+
+    bool api::match(VALUE first, VALUE second) const
+    {
+        return is_true(rb_funcall(first, rb_intern("==="), 1, second));
     }
 
 }}  // namespace facter::ruby
